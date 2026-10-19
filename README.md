@@ -122,7 +122,7 @@ Module đọc dữ liệu từ data/issue_descriptions.csv và hiển thị kíc
 
 6. Trạng thái hiện tại – Buổi 8
 
-## Đã thực hiện
+Đã thực hiện
 
 Tạo cấu trúc thư mục ban đầu gồm src/data/, src/features/, src/models/ và notebooks/.
 
@@ -134,7 +134,7 @@ Kiểm tra không có ô trống trong bốn cột.
 
 Thống kê phân bố của sáu nhãn phân loại.
 
-## Đang hoàn thiện
+Đang hoàn thiện
 
 Xác nhận module src/data/load.py chạy thành công trong môi trường Python đã thống nhất.
 
