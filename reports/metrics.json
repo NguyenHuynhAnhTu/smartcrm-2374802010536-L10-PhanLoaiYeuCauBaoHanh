@@ -1,0 +1,186 @@
+{
+  "project": "smartcrm-l10",
+  "seed": 42,
+  "dataset": {
+    "file": "data\\issue_descriptions.csv",
+    "sha256": "ff79f71cf51af23249810b7f694720c9f5b415ef81f6d002c9142d8d570dba3b",
+    "rows": 2400,
+    "text_column": "issue_desc",
+    "target_column": "issue_category",
+    "label_distribution": {
+      "MAN_HINH": 518,
+      "PIN": 434,
+      "SAC": 375,
+      "PHAN_MEM": 380,
+      "NUOC_VAO": 265,
+      "KHAC": 428
+    },
+    "empty_description_count": 0,
+    "ignored_labels": []
+  },
+  "split_sizes": {
+    "train": 1680,
+    "validation": 360,
+    "test": 360
+  },
+  "vectorizer": {
+    "type": "TfidfVectorizer",
+    "ngram_range": [
+      1,
+      2
+    ],
+    "min_df": 2,
+    "max_features": 20000,
+    "fit_on": "train_only"
+  },
+  "library_versions": {
+    "pandas": "2.3.3",
+    "numpy": "1.26.4",
+    "scikit_learn": "1.6.1",
+    "joblib": "1.5.3",
+    "PyYAML": "6.0.3"
+  },
+  "validation_comparison": {
+    "dummy_most_frequent": {
+      "accuracy": 0.2139,
+      "f1_macro": 0.0587
+    },
+    "logistic_regression": {
+      "accuracy": 0.8083,
+      "f1_macro": 0.8008
+    },
+    "complement_nb": {
+      "accuracy": 0.8333,
+      "f1_macro": 0.8236
+    }
+  },
+  "selected_model": {
+    "name": "complement_nb",
+    "selection_metric": "validation_macro_f1",
+    "validation_metrics": {
+      "accuracy": 0.8333,
+      "f1_macro": 0.8236
+    }
+  },
+  "test": {
+    "accuracy": 0.8389,
+    "f1_macro": 0.8318,
+    "labels_order": [
+      "MAN_HINH",
+      "PIN",
+      "SAC",
+      "PHAN_MEM",
+      "NUOC_VAO",
+      "KHAC"
+    ],
+    "per_label": {
+      "MAN_HINH": {
+        "precision": 0.828,
+        "recall": 0.9872,
+        "f1": 0.9006,
+        "support": 78
+      },
+      "PIN": {
+        "precision": 0.9123,
+        "recall": 0.8,
+        "f1": 0.8525,
+        "support": 65
+      },
+      "SAC": {
+        "precision": 0.7727,
+        "recall": 0.9107,
+        "f1": 0.8361,
+        "support": 56
+      },
+      "PHAN_MEM": {
+        "precision": 0.9048,
+        "recall": 0.6667,
+        "f1": 0.7677,
+        "support": 57
+      },
+      "NUOC_VAO": {
+        "precision": 0.766,
+        "recall": 0.9,
+        "f1": 0.8276,
+        "support": 40
+      },
+      "KHAC": {
+        "precision": 0.8727,
+        "recall": 0.75,
+        "f1": 0.8067,
+        "support": 64
+      }
+    },
+    "confusion_matrix": [
+      [
+        77,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        52,
+        13,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        4,
+        51,
+        0,
+        0,
+        0
+      ],
+      [
+        15,
+        0,
+        1,
+        38,
+        0,
+        3
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        36,
+        4
+      ],
+      [
+        0,
+        1,
+        0,
+        4,
+        11,
+        48
+      ]
+    ],
+    "conclusions": {
+      "most_confused_pair": {
+        "label_a": "PIN",
+        "label_b": "SAC",
+        "errors_in_both_directions": 17
+      },
+      "lowest_recall_label": {
+        "label": "PHAN_MEM",
+        "recall": 0.6667
+      },
+      "possible_garbage_label": "MAN_HINH",
+      "false_positive_predictions_by_label": {
+        "MAN_HINH": 16,
+        "PIN": 5,
+        "SAC": 15,
+        "PHAN_MEM": 4,
+        "NUOC_VAO": 11,
+        "KHAC": 7
+      },
+      "garbage_label_note": "Đây chỉ là dấu hiệu cần kiểm tra thêm; không tự động kết luận nhãn này là nhãn thùng rác."
+    }
+  }
+}

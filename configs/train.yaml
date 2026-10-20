@@ -1,0 +1,29 @@
+project_name: smartcrm-l10
+
+data_path: data/issue_descriptions.csv
+text_column: issue_desc
+target_column: issue_category
+
+seed: 42
+
+split:
+  train: 0.70
+  validation: 0.15
+  test: 0.15
+
+expected_labels:
+  - MAN_HINH
+  - PIN
+  - SAC
+  - PHAN_MEM
+  - NUOC_VAO
+  - KHAC
+
+vectorizer:
+  ngram_min: 1
+  ngram_max: 2
+  min_df: 2
+  max_features: 20000
+
+output_artifact: artifacts/model_v1.joblib
+output_metrics: reports/metrics.json
