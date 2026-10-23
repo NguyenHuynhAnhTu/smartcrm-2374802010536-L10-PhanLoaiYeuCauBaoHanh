@@ -1,3 +1,4 @@
+
 from pathlib import Path
 
 import pandas as pd
@@ -14,15 +15,42 @@ def load_dataset():
         )
 
     df = pd.read_csv(data_path)
-
     return df
 
 
 def main():
-    """Nạp dữ liệu và in báo cáo kiểm tra cơ bản."""
-    df = load_dataset()
+    """Nạp dữ liệu và xử lý các trạng thái của báo cáo."""
+    print("=== TRẠNG THÁI: ĐANG TẢI DỮ LIỆU ===")
 
-    print("=== BÁO CÁO NẠP DATASET ===")
+    try:
+        df = load_dataset()
+
+    except FileNotFoundError as error:
+        print(f"=== TRẠNG THÁI: LỖI ===\n{error}")
+        return
+
+    except pd.errors.EmptyDataError:
+        print(
+            "=== TRẠNG THÁI: RỖNG ===\n"
+            "File dataset không có dữ liệu."
+        )
+        return
+
+    except (pd.errors.ParserError, UnicodeDecodeError, OSError) as error:
+        print(
+            "=== TRẠNG THÁI: LỖI ===\n"
+            f"Không thể đọc dataset: {error}"
+        )
+        return
+
+    if df.empty:
+        print(
+            "=== TRẠNG THÁI: RỖNG ===\n"
+            "Dataset không có dòng dữ liệu."
+        )
+        return
+
+    print("=== TRẠNG THÁI: TẢI THÀNH CÔNG ===")
     print(f"Đường dẫn: data/issue_descriptions.csv")
     print(f"Số dòng: {df.shape[0]}")
     print(f"Số cột: {df.shape[1]}")
@@ -39,12 +67,11 @@ def main():
 
         print("\n=== TỶ LỆ NHÃN (%) ===")
         print(
-            (
-                df["issue_category"]
-                .value_counts(normalize=True)
-                .mul(100)
-                .round(2)
-            ).to_string()
+            df["issue_category"]
+            .value_counts(normalize=True)
+            .mul(100)
+            .round(2)
+            .to_string()
         )
 
     print("\n=== 5 DÒNG DỮ LIỆU ĐẦU ===")
