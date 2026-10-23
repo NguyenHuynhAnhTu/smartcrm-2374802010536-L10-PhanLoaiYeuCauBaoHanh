@@ -1,149 +1,193 @@
-Smart CRM – Tự động phân loại yêu cầu bảo hành
+# Smart CRM – Tự động phân loại yêu cầu bảo hành
 
-Sinh viên: Nguyễn Huỳnh Anh Tú – MSSV: 2374802010536
-Track: AI
-Học phần: Chuyên đề Tốt nghiệp 1
+**Sinh viên:** Nguyễn Huỳnh Anh Tú – MSSV: 2374802010536  
+**Track:** AI  
+**Học phần:** Chuyên đề Tốt nghiệp 1
 
-1. Mô tả bài toán
+## 1. Mô tả bài toán
 
-Xây dựng hệ thống AI hỗ trợ tự động phân loại yêu cầu bảo hành dựa trên mô tả lỗi của khách hàng.
+Xây dựng hệ thống AI hỗ trợ phân loại yêu cầu bảo hành dựa trên mô tả lỗi của khách hàng.
 
-Luồng nghiệp vụ:
+Luồng xử lý chính:
 
-Khách hàng cung cấp mô tả lỗi → Hệ thống tiếp nhận nội dung → Tiền xử lý văn bản → Mô hình AI đề xuất nhóm sự cố → Hiển thị kết quả để nhân viên kiểm tra và xác nhận.
+Khách hàng cung cấp mô tả lỗi → Nạp dữ liệu → Tiền xử lý văn bản → Trích xuất đặc trưng TF-IDF → Mô hình phân loại → Đánh giá kết quả.
 
-Hệ thống sử dụng sáu nhóm sự cố: MAN_HINH, PIN, SAC, PHAN_MEM, NUOC_VAO và KHAC.
+Hệ thống phân loại yêu cầu bảo hành thành sáu nhóm:
 
-2. Yêu cầu môi trường
+- `MAN_HINH`: Lỗi màn hình.
+- `PIN`: Lỗi pin.
+- `SAC`: Lỗi sạc.
+- `PHAN_MEM`: Lỗi phần mềm.
+- `NUOC_VAO`: Lỗi do nước vào.
+- `KHAC`: Các lỗi khác chưa thuộc năm nhóm trên.
 
-Hệ điều hành: Windows 10/11.
+Mô hình có vai trò hỗ trợ đề xuất nhóm sự cố. Việc xác nhận kết quả cuối cùng thuộc về nhân viên.
 
-Ngôn ngữ: Python; phiên bản cụ thể cần được ghi theo kết quả kiểm tra môi trường thực tế.
+## 2. Yêu cầu môi trường
 
-Thư viện xử lý dữ liệu: Pandas, NumPy.
+- Hệ điều hành: Windows 10/11.
+- Python: 3.9.5.
+- Bộ dữ liệu: `data/issue_descriptions.csv`.
+- Thư viện: Pandas, NumPy, Scikit-learn, Joblib, Matplotlib, PyYAML và Pytest.
+- Quản lý mã nguồn: Git và GitHub.
 
-Thư viện học máy: Scikit-learn.
+Các phiên bản thư viện được ghim trong `requirements.txt`.
 
-Thư viện trực quan hóa và phân tích dữ liệu: Matplotlib, Jupyter Notebook.
+## 3. Phạm vi
 
-Dữ liệu đầu vào: data/issue_descriptions.csv.
+### Trong phạm vi
 
-Quản lý mã nguồn: Git và GitHub.
+- Nạp và kiểm tra bộ dữ liệu mô tả lỗi bảo hành.
+- Tiền xử lý văn bản tiếng Việt.
+- Phân tích phân bố các nhóm nhãn.
+- Huấn luyện và so sánh các mô hình phân loại.
+- Đánh giá bằng Accuracy, Macro F1, F1 từng lớp và confusion matrix.
+- Lưu kết quả đánh giá để phục vụ báo cáo.
 
-Các phiên bản Python và thư viện được kiểm tra, thống nhất và ghi trong requirements.txt trước khi hoàn thiện hướng dẫn cài đặt.
+### Ngoài phạm vi
 
-3. Phạm vi
+- Xây dựng toàn bộ hệ thống CRM.
+- Xử lý toàn bộ quy trình bảo hành thực tế.
+- Tự động thay thế quyết định cuối cùng của nhân viên.
+- Phân loại ảnh hoặc video.
+- Sử dụng API bên ngoài để thay thế mô hình phân loại chính.
 
-Trong phạm vi
+## 4. Công nghệ sử dụng
 
-Đọc và kiểm tra dữ liệu mô tả yêu cầu bảo hành.
+- Python.
+- Pandas và NumPy để xử lý dữ liệu.
+- Scikit-learn để xây dựng mô hình học máy.
+- TF-IDF để trích xuất đặc trưng văn bản.
+- DummyClassifier làm baseline.
+- Logistic Regression và ComplementNB để so sánh mô hình.
+- Joblib để lưu mô hình và vectorizer.
+- Pytest để kiểm thử.
+- Git và GitHub để quản lý mã nguồn.
 
-Tiền xử lý văn bản.
+## 5. Cài đặt và chạy dự án
 
-Phân tích phân bố các nhóm nhãn.
+### 5.1. Cấu trúc thư mục
 
-Xây dựng và đánh giá mô hình phân loại.
-
-Hiển thị nhóm sự cố được đề xuất để nhân viên kiểm tra.
-
-Ngoài phạm vi
-
-Không xây dựng toàn bộ hệ thống CRM.
-
-Không xử lý toàn bộ quy trình bảo hành thực tế.
-
-Không tự động thay thế quyết định cuối cùng của nhân viên.
-
-Không xử lý ảnh/video.
-
-Không sử dụng LLM/API bên ngoài để thay thế mô hình phân loại chính.
-
-4. Công nghệ sử dụng
-
-Python.
-
-Pandas, NumPy.
-
-Scikit-learn.
-
-TF-IDF để trích xuất đặc trưng văn bản.
-
-Logistic Regression làm một mô hình phân loại cần đánh giá.
-
-Matplotlib và Jupyter Notebook phục vụ phân tích dữ liệu.
-
-Git và GitHub để quản lý mã nguồn.
-
-5. Cấu trúc dự án, cài đặt và chạy
-
-5.1. Cấu trúc thư mục
-
+```text
 smartcrm-2374802010536-L10-PhanLoaiYeuCauBaoHanh/
+├── configs/
+│   └── train.yaml
 ├── data/
 │   └── issue_descriptions.csv
 ├── docs/
-│   ├── srs.md
-│   ├── ml-problem-statement.md
-│   ├── architecture.drawio.png
-│   ├── ML_pipiline.png
-│   ├── UseCaseDiagram.drawio
-│   └── UseCaseDiagram.png
-├── models/
-├── notebooks/
+├── reports/
+│   └── metrics.json
 ├── src/
 │   ├── data/
 │   │   └── load.py
 │   ├── features/
-│   └── models/
+│   │   └── text.py
+│   ├── models/
+│   │   └── train.py
+│   └── tests/
+│       └── test_text.py
 ├── .env.example
 ├── .gitignore
 ├── requirements.txt
 ├── README.md
 └── thay-doi-thiet-ke.md
+```
 
-5.2. Cài đặt môi trường
+File `artifacts/model_v1.joblib` được tạo khi chạy quy trình huấn luyện. File này không được đưa vào Git vì đã được cấu hình trong `.gitignore`.
 
-Mở PowerShell tại thư mục gốc của dự án và chạy:
+### 5.2. Tạo môi trường Python
 
+Mở PowerShell tại thư mục gốc của dự án và thực hiện từng lệnh:
+
+```powershell
+python --version
+```
+
+```powershell
 python -m venv .venv
+```
+
+```powershell
 .\.venv\Scripts\Activate.ps1
+```
+
+```powershell
 python -m pip install --upgrade pip
-python -m pip install pandas numpy scikit-learn matplotlib jupyter
+```
 
-Sau khi kiểm tra phiên bản thư viện thực tế, cập nhật và khóa các phiên bản tương ứng trong requirements.txt.
+```powershell
+python -m pip install -r requirements.txt
+```
 
-5.3. Chạy module nạp dữ liệu
+Kiểm tra các thư viện chính:
 
-Khi đã cài đủ thư viện trong đúng môi trường Python, chạy:
+```powershell
+python -c "import pandas, numpy, sklearn, joblib, matplotlib, yaml, pytest; print('IMPORT OK')"
+```
 
+### 5.3. Nạp dữ liệu
+
+```powershell
 python -m src.data.load
+```
 
-Module đọc dữ liệu từ data/issue_descriptions.csv và hiển thị kích thước dữ liệu, tên cột, số ô trống, phân bố nhãn và một số dòng dữ liệu mẫu.
+Module nạp dữ liệu đọc tệp `data/issue_descriptions.csv` và hiển thị thông tin kiểm tra dữ liệu.
 
-6. Trạng thái hiện tại – Buổi 8
+### 5.4. Chạy unit test
 
-Đã thực hiện
+```powershell
+python -m pytest -q
+```
 
-Tạo cấu trúc thư mục ban đầu gồm src/data/, src/features/, src/models/ và notebooks/.
+Lệnh này chạy các unit test trong dự án. Số lượng test PASS cần được cập nhật theo kết quả chạy thực tế.
 
-Đọc được data/issue_descriptions.csv bằng Pandas trong lệnh kiểm tra dữ liệu.
+### 5.5. Huấn luyện và đánh giá mô hình
 
-Kiểm tra dataset có 2.400 dòng và 4 cột.
+```powershell
+python -m src.models.train --config configs/train.yaml
+```
 
-Kiểm tra không có ô trống trong bốn cột.
+Quy trình huấn luyện sử dụng cấu hình trong `configs/train.yaml`, so sánh mô hình trên tập validation, chọn mô hình theo Macro F1 và tạo các kết quả đầu ra:
 
-Thống kê phân bố của sáu nhãn phân loại.
+- `reports/metrics.json`: Lưu metric và các kết luận đánh giá.
+- `artifacts/model_v1.joblib`: Lưu model cùng vectorizer.
 
-Đang hoàn thiện
+**Lưu ý:** Script hiện tại thực hiện cả đánh giá trên tập test. Chỉ chạy quy trình đầy đủ khi thực sự cần tái tạo thí nghiệm; không chạy lại chỉ để kiểm tra README hoặc thay đổi những phần không ảnh hưởng đến mô hình.
 
-Xác nhận module src/data/load.py chạy thành công trong môi trường Python đã thống nhất.
+## 6. Kết quả thực nghiệm AI
 
-Hoàn thiện notebook EDA với thống kê độ dài văn bản và biểu đồ phân bố nhãn.
+Bộ dữ liệu có 2.400 mẫu, thuộc sáu nhóm sự cố. Dữ liệu được chia theo tỷ lệ 70% train, 15% validation và 15% test.
 
-Viết nhận xét về mất cân bằng lớp và kiểm tra các trường hợp có khả năng nhiễu nhãn.
+Kết quả của lần chạy thực nghiệm đã ghi nhận:
 
-Kiểm tra ảnh minh chứng trong docs/ thể hiện kết quả chạy thành công.
+| Mô hình | Accuracy validation | Macro F1 validation |
+|---|---:|---:|
+| DummyClassifier | 0.2139 | 0.0587 |
+| Logistic Regression | 0.8083 | 0.8008 |
+| ComplementNB | 0.8333 | 0.8236 |
 
-Cập nhật README và các tài liệu liên quan theo kết quả thực tế.
+ComplementNB được chọn dựa trên Macro F1 của validation.
 
-Ghi chú: Buổi 8 tập trung vào việc xây dựng cấu trúc dự án, nạp dữ liệu và phân tích dữ liệu ban đầu. Việc huấn luyện, so sánh và đánh giá mô hình được thực hiện ở các bước phát triển tiếp theo.
+Kết quả test của mô hình được chọn:
+
+- Accuracy: **0.8389**.
+- Macro F1: **0.8318**.
+
+Ba nhận xét từ confusion matrix:
+
+1. Cặp PIN và SAC dễ bị nhầm lẫn nhất, với tổng cộng 17 dự đoán nhầm theo hai chiều. Cần kiểm tra lại định nghĩa nhãn và các mô tả lỗi có nội dung tương tự.
+2. PHAN_MEM có Recall thấp nhất, đạt 0.6667. Mô hình nhận diện đúng 38 trên 57 mẫu PHAN_MEM của tập test.
+3. MAN_HINH nhận nhiều dự đoán dương tính giả nhất trong kết quả hiện tại. Đây là dấu hiệu cần kiểm tra thêm, chưa đủ cơ sở để kết luận nhãn này là nhãn thùng rác.
+
+Chi tiết kết quả và confusion matrix được lưu trong `reports/metrics.json`.
+
+## 7. Kiểm thử và trạng thái phát triển
+
+- Module tiền xử lý văn bản nằm tại `src/features/text.py`.
+- Unit test tiền xử lý văn bản nằm tại `src/tests/test_text.py`.
+- Cấu hình huấn luyện nằm tại `configs/train.yaml`.
+- Module nạp dữ liệu nằm tại `src/data/load.py`.
+- Module huấn luyện và đánh giá nằm tại `src/models/train.py`.
+- Kết quả đánh giá được lưu tại `reports/metrics.json`.
+
+Các công việc tiếp theo gồm hoàn thiện kiểm thử, bổ sung ảnh minh chứng trong `docs/`, kiểm tra hướng dẫn bằng cách clone repo vào thư mục mới và xác nhận luồng chính chạy thành công theo README.
