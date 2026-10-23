@@ -1,0 +1,34 @@
+{
+  "seed": 42,
+  "dataset_sha256": "ff79f71cf51af23249810b7f694720c9f5b415ef81f6d002c9142d8d570dba3b",
+  "scope": "Train/validation only; test not evaluated",
+  "run_1": {
+    "dummy_most_frequent": {
+      "accuracy": 0.2139,
+      "f1_macro": 0.0587
+    },
+    "logistic_regression": {
+      "accuracy": 0.8083,
+      "f1_macro": 0.8008
+    },
+    "complement_nb": {
+      "accuracy": 0.8333,
+      "f1_macro": 0.8236
+    }
+  },
+  "run_2": {
+    "dummy_most_frequent": {
+      "accuracy": 0.2139,
+      "f1_macro": 0.0587
+    },
+    "logistic_regression": {
+      "accuracy": 0.8083,
+      "f1_macro": 0.8008
+    },
+    "complement_nb": {
+      "accuracy": 0.8333,
+      "f1_macro": 0.8236
+    }
+  },
+  "identical": true
+}
