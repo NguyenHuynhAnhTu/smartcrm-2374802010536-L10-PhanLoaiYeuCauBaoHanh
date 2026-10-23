@@ -14,6 +14,8 @@ venv/
 data/raw/
 models/*.pkl
 models/*.pt
+artifacts/*.joblib
+artifacts/*.pkl
 
 # IDE / OS
 .vscode/
