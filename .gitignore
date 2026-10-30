@@ -1,24 +1,63 @@
+# ==========================================
+# 1. BẢO MẬT (QUAN TRỌNG NHẤT - KHÔNG ĐƯỢC BỎ SÓT)
+# ==========================================
 .env
+.env.*
+!.env.example
 
-# Dependencies & build
+# ==========================================
+# 2. MÔI TRƯỜNG & CACHE PYTHON
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ==========================================
+# 3. DỮ LIỆU & MÔ HÌNH (TRÁNH REPO BỊ PHÌNH TO)
+# ==========================================
+# Chặn dữ liệu thô (nếu file csv của bạn quá lớn, hãy chặn ở đây)
+data/raw/
+data/processed/
+*.csv
+!sample_data.csv
+
+# Chặn file mô hình (Bắt buộc theo yêu cầu BT2)
+*.joblib
+*.pkl
+*.pt
+*.h5
+models/*
+artifacts/*
+!artifacts/.gitkeep
+!models/.gitkeep
+
+# ==========================================
+# 4. LOGS & BÁO CÁO RÁC
+# ==========================================
+*.log
+reports/*.log
+# Lưu ý: KHÔNG chặn metrics.json vì đây là minh chứng nộp bài
+!reports/metrics.json
+
+# ==========================================
+# 5. IDE & HỆ ĐIỀU HÀNH
+# ==========================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# 6. CÁC NGÔN NGỮ KHÁC (Nếu có dùng chung repo)
+# ==========================================
 node_modules/
 bin/
 obj/
 target/
 dist/
-__pycache__/
-.venv/
-venv/
-
-# Dữ liệu & model lớn
-data/raw/
-models/*.pkl
-models/*.pt
-artifacts/*.joblib
-artifacts/*.pkl
-
-# IDE / OS
-.vscode/
-.idea/
-.DS_Store
-Thumbs.db
