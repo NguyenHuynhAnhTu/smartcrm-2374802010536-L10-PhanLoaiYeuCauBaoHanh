@@ -145,3 +145,12 @@ PHAN_MEM có Recall thấp nhất (0.6667). Mô hình nhận diện đúng 38/57
 MAN_HINH nhận nhiều dự đoán dương tính giả nhất. Cần kiểm tra thêm.
 
 Chi tiết kết quả được lưu trong reports/metrics.json.
+## 5. Chạy bằng Docker 
+Hệ thống đã được đóng gói bằng Docker, giúp chạy được trên mọi máy tính mà không cần cài đặt môi trường Python. Để khởi chạy toàn bộ hệ thống, chỉ cần chạy 2 lệnh sau:
+
+```bash
+# 1. Build image và chạy container ngầm
+docker compose up -d --build
+
+# 2. Kiểm tra trạng thái hoạt động
+docker compose ps
