@@ -28,7 +28,7 @@ MODEL_PATH = PROJECT_ROOT / "artifacts" / "model_v1.joblib"
 class PredictionRequest(BaseModel):
     mo_ta: constr(
         strip_whitespace=True,
-        
+        min_length=5,
         max_length=2000
     )
 
