@@ -2,155 +2,105 @@
 
 **Sinh viên:** Nguyễn Huỳnh Anh Tú – MSSV: 2374802010536  
 **Track:** AI  
-**Học phần:** Chuyên đề Tốt nghiệp 1
-**Link repo Github:**`https://github.com/NguyenHuynhAnhTu/smartcrm-2374802010536-L10-PhanLoaiYeuCauBaoHanh`
-**Tag phiên bản:** `v0.2`
+**Học phần:** Chuyên đề Tốt nghiệp 1  
+**Link repo Github:** [smartcrm-2374802010536-L10-PhanLoaiYeuCauBaoHanh](https://github.com/NguyenHuynhAnhTu/smartcrm-2374802010536-L10-PhanLoaiYeuCauBaoHanh)  
+**Tag phiên bản:** `v1.0` (Dành cho Bài tập 3)
+
 ## 1. Mô tả bài toán
 
-Xây dựng hệ thống AI hỗ trợ phân loại yêu cầu bảo hành dựa trên mô tả lỗi của khách hàng.
-
-Luồng xử lý chính:
-Khách hàng cung cấp mô tả lỗi → Nạp dữ liệu → Tiền xử lý văn bản → Trích xuất đặc trưng TF-IDF → Mô hình phân loại → Đánh giá kết quả → Triển khai API (FastAPI).
-
-Hệ thống phân loại yêu cầu bảo hành thành sáu nhóm:
-- `MAN_HINH`: Lỗi màn hình.
-- `PIN`: Lỗi pin.
-- `SAC`: Lỗi sạc.
-- `PHAN_MEM`: Lỗi phần mềm.
-- `NUOC_VAO`: Lỗi do nước vào.
-- `KHAC`: Các lỗi khác chưa thuộc năm nhóm trên.
-
-Mô hình có vai trò hỗ trợ đề xuất nhóm sự cố. Việc xác nhận kết quả cuối cùng thuộc về nhân viên.
+Xây dựng hệ thống AI hỗ trợ phân loại yêu cầu bảo hành dựa trên mô tả lỗi của khách hàng. Hệ thống phân loại yêu cầu thành sáu nhóm: MAN_HINH, PIN, SAC, PHAN_MEM, NUOC_VAO, và KHAC. Mô hình có vai trò hỗ trợ đề xuất nhóm sự cố, việc xác nhận kết quả cuối cùng thuộc về nhân viên.
 
 ## 2. Yêu cầu môi trường
 
 - Hệ điều hành: Windows 10/11, macOS, Linux.
 - Python: 3.9+.
+- Docker Desktop (để chạy hệ thống qua Docker).
 - Bộ dữ liệu: `data/issue_descriptions.csv`.
-- Thư viện: Pandas, NumPy, Scikit-learn, Joblib, FastAPI, Uvicorn, Pytest, v.v.
-- Quản lý mã nguồn: Git và GitHub.
 
-Các phiên bản thư viện được ghim trong `requirements.txt`.
+## 3. Cấu trúc thư mục
 
-## 3. Cài đặt và chạy dự án
+```text
+smartcrm-2374802010536-L10-PhanLoaiYeuCauBaoHanh/
+├── .github/workflows/        # Chứa file ci.yml cấu hình GitHub Actions
+├── artifacts/                # Nơi lưu model_v1.joblib (bị chặn bởi .gitignore)
+├── configs/                  # Chứa file cấu hình train.yaml
+├── data/                     # Chứa file dữ liệu issue_descriptions.csv
+├── docs/                     # Chứa các tài liệu kỹ thuật (Test plan, Bug log, Model card, v.v.)
+├── reports/                  # Chứa file metrics.json
+├── src/                      # Mã nguồn chính
+│   ├── features/             # Hàm clean_text và build_features
+│   ├── models/               # Script huấn luyện train.py
+│   ├── serve/                # API FastAPI (app.py)
+│   └── tests/                # Các file test (test_ml.py, test_text.py)
+├── .env.example              # File mẫu biến môi trường
+├── Dockerfile                # File cấu hình Docker
+├── docker-compose.yml        # File cấu hình Docker Compose
+├── requirements.txt          # Danh sách thư viện
+└── README.md                 # File hướng dẫn này
+```
 
-### 3.1. Cấu trúc thư mục
-
-text
-smartcrm-2374802010536-L10-PhanLoaiYeuCauBaoHanh/  # Thư mục gốc của toàn bộ dự án
-│
-├── configs/                  # THƯ MỤC CẤU HÌNH (Configuration)
-│   └── train.yaml            # Chứa các siêu tham số (hyperparameters), đường dẫn dữ liệu. Giúp thay đổi thí nghiệm mà không cần sửa code.
-│
-├── data/                     # THƯ MỤC DỮ LIỆU (Data)
-│   └── issue_descriptions.csv# Tập dữ liệu thô chứa 2400 mẫu mô tả lỗi của khách hàng.
-│
-├── docs/                     # THƯ MỤC TÀI LIỆU (Documentation)
-│                             # Chứa các file báo cáo PDF, hình ảnh minh chứng, sơ đồ kiến trúc, file thiết kế (srs.md, ml-problem-statement.md).
-│
-├── reports/                  # THƯ MỤC BÁO CÁO KẾT QUẢ (Reports)
-│   └── metrics.json          # File JSON lưu trữ các chỉ số đánh giá mô hình (Accuracy, F1-score, Confusion Matrix). Dùng để chèn số liệu vào báo cáo.
-│
-├── src/                      # THƯ MỤC MÃ NGUỒN CHÍNH (Source Code)
-│   │
-│   ├── data/                 # Lớp xử lý dữ liệu
-│   │   └── load.py           # Code thực hiện việc đọc file CSV và kiểm tra tính hợp lệ của dữ liệu đầu vào.
-│   │
-│   ├── features/             # Lớp trích xuất đặc trưng
-│   │   └── text.py           # Chứa hàm clean_text() để làm sạch văn bản (xóa ký tự đặc biệt, đưa về chữ thường).
-│   │
-│   ├── models/               # Lớp huấn luyện mô hình
-│   │   └── train.py          # Code huấn luyện, so sánh các mô hình (Dummy, Logistic, ComplementNB), chia tập dữ liệu và lưu mô hình tốt nhất.
-│   │
-│   ├── serve/                # Lớp triển khai (Serving/Deployment)
-│   │   └── app.py            # Code xây dựng API bằng FastAPI. Chứa giao diện web HTML và các endpoint (/du-doan, /health) để mô hình AI có thể giao tiếp với bên ngoài.
-│   │
-│   └── tests/                # THƯ MỤC KIỂM THỬ (Testing)
-│       ├── test_text.py      # Unit test kiểm tra xem hàm làm sạch văn bản có hoạt động đúng không.
-│       └── test_api.py       # Unit test kiểm tra API (gửi câu đúng, câu sai, kiểm tra trạng thái hệ thống).
-│
-├── artifacts/                # THƯ MỤC LƯU TRỮ MÔ HÌNH (Artifacts)
-│   └── model_v1.joblib       # File nhị phân chứa mô hình và vectorizer đã được huấn luyện xong. (Thư mục này bị chặn bởi .gitignore, không đẩy lên Git).
-│
-├── .env.example              # File mẫu chứa danh sách các biến môi trường (Ví dụ: CONFIDENCE_THRESHOLD=0.70). Không chứa dữ liệu thật.
-├── .gitignore                # File cấu hình Git: Chặn các file rác, file mô hình nặng, file bảo mật (.env) không cho đẩy lên GitHub.
-├── requirements.txt          # Danh sách các thư viện cần thiết (đã ghim phiên bản bằng dấu ==) để cài đặt môi trường.
-└── README.md                 # File hướng dẫn "sống còn": Cách cài đặt, cách chạy test, cách chạy API và khởi động server.
-
-### 3.2. Tạo môi trường Python
-Mở Terminal (PowerShell/CMD) tại thư mục gốc của dự án và thực hiện:
-
-bash
-python -m venv .venv
-# Windows:
-.\.venv\Scripts\activate
-# macOS/Linux:
-source .venv/bin/activate
-
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-
-### 3.3. Chạy Unit Test
-Hệ thống có 9 bài kiểm thử (bao gồm test tiền xử lý văn bản và test API). Chạy lệnh sau để kiểm tra:
+## 4. Hướng dẫn chạy Unit Test  
+Hệ thống có 14 test case tự động bao phủ đủ 5 loại test (luồng đúng, biên, dữ liệu sai, rò rỉ dữ liệu, tái lập).
 
 bash
 python -m pytest src/tests/ -v
-(Kết quả kỳ vọng: 9 passed).
+(Kết quả kỳ vọng: 14 passed).
 
-### 3.4. Huấn luyện và đánh giá mô hình (Nếu cần tạo lại Model)
-bash
-python -m src.models.train --config configs/train.yaml
-Quy trình này sẽ tạo ra:
+## 5. Hướng dẫn chạy dự án bằng Docker 
+Hệ thống đã được đóng gói bằng Docker. Do các lý do bảo mật và giới hạn dung lượng, các file cấu hình (.env) và file mô hình (*.joblib) không được đẩy lên Git. Hãy làm đúng theo các bước sau để chạy hệ thống từ thư mục trống:
 
-reports/metrics.json: Lưu metric và các kết luận đánh giá.
-
-artifacts/model_v1.joblib: Lưu model cùng vectorizer.
-
-### 3.5. Khởi chạy API và Giao diện Web Demo
-Để khởi chạy server, chạy lệnh sau:
+Bước 1: Cài đặt thư viện và tạo file cấu hình
 
 bash
-uvicorn src.serve.app:app --reload
-Sau khi server báo Uvicorn running on http://127.0.0.1:8000:
+# Cài đặt các thư viện cần thiết (bao gồm cả pytest)
+pip install -r requirements.txt
 
-Truy cập http://127.0.0.1:8000/ để mở giao diện nhập liệu trực quan.
+# Tạo file môi trường từ file mẫu
+# Windows:
+copy .env.example .env
+# Mac/Linux:
+# cp .env.example .env
+Bước 2: Huấn luyện mô hình (Nếu chưa có file model_v1.joblib)
 
-Truy cập http://127.0.0.1:8000/docs để xem tài liệu Swagger UI của API.
+bash
+python -m src.models.train
+(Lệnh này sẽ mất khoảng 1-2 phút và tạo ra file artifacts/model_v1.joblib)
 
-Truy cập http://127.0.0.1:8000/health để kiểm tra trạng thái hệ thống.
+Bước 3: Khởi chạy hệ thống bằng Docker
 
-## 4. Kết quả thực nghiệm AI
-Bộ dữ liệu có 2.400 mẫu, thuộc sáu nhóm sự cố. Dữ liệu được chia theo tỷ lệ 70% train, 15% validation và 15% test.
-
-Kết quả của lần chạy thực nghiệm:
-
-Mô hình	Accuracy validation	Macro F1 validation
-DummyClassifier	0.2139	0.0587
-Logistic Regression	0.8083	0.8008
-ComplementNB	0.8333	0.8236
-ComplementNB được chọn dựa trên Macro F1 của validation.
-
-Kết quả test của mô hình được chọn:
-
-Accuracy: 0.8389.
-
-Macro F1: 0.8318.
-
-Ba nhận xét từ confusion matrix:
-
-Cặp PIN và SAC dễ bị nhầm lẫn nhất (17 dự đoán nhầm). Cần kiểm tra lại định nghĩa nhãn.
-
-PHAN_MEM có Recall thấp nhất (0.6667). Mô hình nhận diện đúng 38/57 mẫu.
-
-MAN_HINH nhận nhiều dự đoán dương tính giả nhất. Cần kiểm tra thêm.
-
-Chi tiết kết quả được lưu trong reports/metrics.json.
-## 5. Chạy bằng Docker 
-Hệ thống đã được đóng gói bằng Docker, giúp chạy được trên mọi máy tính mà không cần cài đặt môi trường Python. Để khởi chạy toàn bộ hệ thống, chỉ cần chạy 2 lệnh sau:
-
-```bash
-# 1. Build image và chạy container ngầm
+bash
 docker compose up -d --build
+Bước 4: Kiểm tra hệ thống
+Truy cập http://127.0.0.1:8000/ để mở giao diện Web nhập liệu.
+Truy cập http://127.0.0.1:8000/docs để xem tài liệu Swagger UI.
+Truy cập http://127.0.0.1:8000/health để kiểm tra trạng thái API (kỳ vọng: {"status": "healthy"}).
 
-# 2. Kiểm tra trạng thái hoạt động
-docker compose ps
+Để tắt hệ thống, chạy lệnh: docker compose down
+
+## 6. Kết quả thực nghiệm AI
+Bộ dữ liệu: 2.400 mẫu, chia tỷ lệ 70% Train / 15% Validation / 15% Test.
+
+Mô hình được chọn: Complement Naive Bayes (dựa trên Macro F1 của validation).
+
+Kết quả Test: Accuracy = 0.8389; Macro F1 = 0.8318.
+
+Chi tiết kết quả và Confusion Matrix được lưu trong reports/metrics.json.
+
+## 7. Tài liệu kỹ thuật (Dành cho Bài tập 3)
+Toàn bộ tài liệu kiểm thử và đánh giá được lưu trữ trong thư mục docs/:
+
+Test Plan
+
+Test Report
+
+Bug Log
+
+Deployment Guide
+
+Model Card
+
+AI Disclosure
+
+## 8. Trạng thái CI (Continuous Integration)
+Dự án đã được cấu hình GitHub Actions để tự động chạy toàn bộ test mỗi khi có code mới được push lên nhánh main.
+https://github.com/NguyenHuynhAnhTu/smartcrm-2374802010536-L10-PhanLoaiYeuCauBaoHanh/actions
