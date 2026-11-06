@@ -44,3 +44,18 @@
 - **Quyết định:** SỬA.
 - **Lý do:** Repo cần lưu trữ đầy đủ tài liệu yêu cầu, thiết kế, tệp nguồn sơ đồ và thông tin sử dụng AI để hỗ trợ kiểm tra, chỉnh sửa và theo dõi tiến độ giữa các bài tập.
 - **Ảnh hưởng:** Kiểm tra và hoàn thiện cấu trúc repo; bổ sung hoặc cập nhật các tài liệu còn thiếu; lưu tệp `.drawio` có thể chỉnh sửa bên cạnh hình ảnh xuất ra; cập nhật README và tạo các commit riêng theo từng nhóm công việc bằng thông điệp phù hợp.
+# Nhật ký thay đổi thiết kế
+
+## Sau phản hồi Bài tập 2 (Buổi 12)
+
+### TD-07 – Cập nhật Validation cho API
+- **Phản hồi của GV:** API chưa chặn được dữ liệu rỗng hoặc quá ngắn.
+- **Quyết định:** SỬA.
+- **Lý do:** Đảm bảo dữ liệu đầu vào cho mô hình AI luôn hợp lệ, tránh lỗi hệ thống.
+- **Ảnh hưởng:** Bổ sung `min_length=5` vào `PredictionRequest` trong `src/serve/app.py`.
+
+### TD-08 – Bổ sung Test Cases
+- **Phản hồi của GV:** Cần chạy thật 10-12 test case theo đúng quy định.
+- **Quyết định:** SỬA.
+- **Lý do:** Đáp ứng yêu cầu kiểm thử của BT3, chứng minh hệ thống hoạt động ổn định.
+- **Ảnh hưởng:** Tạo file `src/tests/test_ml.py` với 14 test cases bao phủ đủ 5 loại test.
