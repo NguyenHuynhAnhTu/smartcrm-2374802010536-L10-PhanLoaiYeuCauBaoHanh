@@ -31,7 +31,7 @@ def clean_text(text):
     """
     if text is None:
         return ""
-
+    
     text = str(text).strip().lower()
 
     if not text:
