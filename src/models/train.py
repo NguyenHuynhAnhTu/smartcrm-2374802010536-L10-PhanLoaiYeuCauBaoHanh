@@ -110,6 +110,7 @@ def split_dataset(df, config):
     if min(train_ratio, val_ratio, test_ratio) <= 0:
         raise ValueError("Mỗi tập dữ liệu phải có tỷ lệ lớn hơn 0.")
 
+# FIX BUG-02: Đảm bảo tính tái lập (Reproducibility) cho mô hình
     train_df, remaining_df = train_test_split(
         df,
         test_size=val_ratio + test_ratio,
